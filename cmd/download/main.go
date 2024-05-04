@@ -1,7 +1,7 @@
 package main
 
 import (
-	"wobblingstatistics/internal/download"
+	"codeberg.org/snacks/wobbling-statistics/internal/download"
 )
 
 func main() {

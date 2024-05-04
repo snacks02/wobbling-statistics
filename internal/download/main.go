@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"wobblingstatistics/internal/database"
+	"codeberg.org/snacks/wobbling-statistics/internal/database"
 )
 
 type Squig struct {

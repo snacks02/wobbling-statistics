@@ -1,4 +1,4 @@
-module wobblingstatistics
+module codeberg.org/snacks/wobbling-statistics
 
 go 1.22.2
 
