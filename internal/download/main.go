@@ -74,17 +74,43 @@ func Main() {
 						ShopLink:      phone.ShopLink,
 					})
 					for _, file := range phone.File.Slice {
-						channelLeft, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v L.txt", file))
-						channelRight, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v R.txt", file))
-						channelUnknown, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v.txt", file))
 						var fileRecord database.File
-						tx.FirstOrCreate(&fileRecord, database.File{
-							ChannelLeft:    channelLeft,
-							ChannelRight:   channelRight,
-							ChannelUnknown: channelUnknown,
-							PhoneID:        phoneRecord.ID,
-							Text:           file,
-						})
+						err := tx.
+							Model(&database.File{}).
+							First(&fileRecord, "files.phone_id = ? AND files.text = ?", phoneRecord.ID, file).
+							Error
+						if err == nil {
+							if fileRecord.ChannelLeft == nil {
+								channelLeft, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v L.txt", file))
+								if channelLeft != nil {
+									tx.Model(&fileRecord).Update("files.channel_left", channelLeft)
+								}
+							}
+							if fileRecord.ChannelRight == nil {
+								channelRight, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v R.txt", file))
+								if channelRight != nil {
+									tx.Model(&fileRecord).Update("files.channel_right", channelRight)
+								}
+							}
+							if fileRecord.ChannelUnknown == nil {
+								channelUnknown, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v.txt", file))
+								if channelUnknown != nil {
+									tx.Model(&fileRecord).Update("files.channel_unknown", channelUnknown)
+								}
+							}
+						} else {
+							channelLeft, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v L.txt", file))
+							channelRight, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v R.txt", file))
+							channelUnknown, _ := requestFile(squig.Username, squig.Folder, fmt.Sprintf("%v.txt", file))
+							var fileRecord database.File
+							tx.FirstOrCreate(&fileRecord, database.File{
+								ChannelLeft:    channelLeft,
+								ChannelRight:   channelRight,
+								ChannelUnknown: channelUnknown,
+								PhoneID:        phoneRecord.ID,
+								Text:           file,
+							})
+						}
 					}
 					for _, suffix := range phone.Suffix.Slice {
 						var suffixRecord database.Suffix
