@@ -137,7 +137,7 @@ func requestBrands(username string, folder string) ([]BrandsResponseBrand, error
 }
 
 func requestFile(username string, folder string, file string) (*string, error) {
-	url := fmt.Sprintf("https://%v.squig.link%v/data/%v", username, folder, url.PathEscape(file))
+	url := fmt.Sprintf("https://%v.squig.link%vdata/%v", username, folder, url.PathEscape(file))
 	response, err := http.Get(url)
 	if err != nil {
 		return nil, err
