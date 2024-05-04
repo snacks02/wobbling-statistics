@@ -1,8 +1,12 @@
 package database
 
 import (
+	"log"
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type Site struct {
@@ -63,7 +67,17 @@ type Suffix struct {
 }
 
 func Create(name string) (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open(name), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(name), &gorm.Config{
+		Logger: logger.New(
+			log.Default(),
+			logger.Config{
+				Colorful:                  true,
+				IgnoreRecordNotFoundError: true,
+				LogLevel:                  logger.Warn,
+				SlowThreshold:             200 * time.Millisecond,
+			},
+		),
+	})
 	if err != nil {
 		return nil, err
 	}
