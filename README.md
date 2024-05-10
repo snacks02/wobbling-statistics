@@ -4,5 +4,5 @@
 ## Usage
 
 ```sh
-go run ./cmd/download
+cargo run --release
 ```

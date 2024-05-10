@@ -1,0 +1,12 @@
+[package]
+name = "wobbling-statistics"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0.83" }
+indoc = { version = "2.0.5" }
+log = { version = "0.4.21" }
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+serde = { version = "1.0.200", features = ["derive"] }
+ureq = { version = "2.9.7", features = ["json"] }
