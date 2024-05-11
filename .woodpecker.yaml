@@ -1,0 +1,13 @@
+steps:
+  check:
+    commands:
+      - rustup component add clippy
+      - rustup component add rustfmt
+      - cargo build
+      - cargo clippy -- --deny warnings
+      - cargo fmt
+      - cargo test
+    image: rust:1.78-slim-bookworm
+    when:
+      branch: main
+      event: [pull_request, push]
