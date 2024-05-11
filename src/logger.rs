@@ -43,7 +43,7 @@ impl log::Log for Logger {
                 record
                     .args()
                     .to_string()
-                    .replace("\n", &format!("\n{} │", indentation)),
+                    .replace('\n', &format!("\n{} │", indentation)),
                 indentation,
                 ANSI_RESET,
             );
