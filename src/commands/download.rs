@@ -6,13 +6,14 @@ mod requests;
 
 #[derive(Debug, Parser)]
 pub(crate) struct Command {
+    /// Set the output file
     #[arg(default_value = "squig.db", long, short)]
-    output_file: String,
+    output: String,
 }
 
 impl Command {
     pub fn execute(&self) -> Result<(), Error> {
-        let mut connection = database::init(&self.output_file)?;
+        let mut connection = database::init(&self.output)?;
 
         let transaction = connection.transaction()?;
         for site in requests::sites::call()? {
