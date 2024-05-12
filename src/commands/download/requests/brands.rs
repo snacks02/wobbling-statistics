@@ -1,13 +1,14 @@
 use anyhow::Error;
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Brand {
     pub name: String,
     pub phones: Vec<Phone>,
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Phone {
     pub aliexpress: Option<String>,
@@ -22,7 +23,7 @@ pub struct Phone {
     pub suffix: Option<StringOrVec>,
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Other {
     #[serde(flatten)]
     pub price: Option<BTreeMap<String, String>>,
@@ -30,14 +31,14 @@ pub struct Other {
     pub review_score: Option<BTreeMap<String, I8OrString>>,
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum StringOrVec {
     String(String),
     Vec(Vec<String>),
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum I8OrString {
     I8(i8),

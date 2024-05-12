@@ -1,13 +1,14 @@
 use anyhow::Error;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Site {
     pub dbs: Vec<Db>,
     pub name: String,
     pub username: String,
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Db {
     pub folder: String,
     #[serde(rename = "type")]
