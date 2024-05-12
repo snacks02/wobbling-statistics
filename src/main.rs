@@ -21,8 +21,14 @@ struct CommandParser {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    /// Analyze transformed data in the SQLite database
+    Analyze(commands::analyze::Command),
+
     /// Download Squiglink data and save it into a SQLite database
     Download(commands::download::Command),
+
+    /// Transform the SQLite database to make it easier to process
+    Transform(commands::transform::Command),
 }
 
 fn main() -> Result<(), Error> {
@@ -30,7 +36,9 @@ fn main() -> Result<(), Error> {
 
     let arguments = CommandParser::parse();
     match arguments.command {
+        Command::Analyze(command) => command.execute()?,
         Command::Download(command) => command.execute()?,
+        Command::Transform(command) => command.execute()?,
     }
 
     Ok(())
