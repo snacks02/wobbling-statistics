@@ -1,6 +1,5 @@
-use std::collections;
-
 use anyhow::Error;
+use std::collections::BTreeMap;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Brand {
@@ -26,9 +25,9 @@ pub struct Phone {
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Other {
     #[serde(flatten)]
-    pub price: Option<collections::BTreeMap<String, String>>,
+    pub price: Option<BTreeMap<String, String>>,
     #[serde(flatten)]
-    pub review_score: Option<collections::BTreeMap<String, I8OrString>>,
+    pub review_score: Option<BTreeMap<String, I8OrString>>,
 }
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
