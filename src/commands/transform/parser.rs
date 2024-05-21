@@ -52,7 +52,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
             || line == "Senny IE600 L.txt"
             || line == "Senny IE600 R.txt"
             || line.is_empty()
-            || line.starts_with("*")
+            || line.starts_with('*')
             || line.starts_with("averaging")
             || line.starts_with("decay")
             || line.starts_with("latitude")
@@ -67,7 +67,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
 
         match kind {
             Kind::AchoReviews | Kind::FrequencySplPhase => {
-                let values: Vec<String> = line.split("\t").map(|x| x.trim().to_string()).collect();
+                let values: Vec<String> = line.split('\t').map(|x| x.trim().to_string()).collect();
                 points.push(Point {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: values[2].parse::<f64>().ok(),
@@ -75,7 +75,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                 })
             }
             Kind::Curve1 | Kind::FftAudioTools | Kind::FrequencyMagnitude => {
-                let values: Vec<String> = line.split("\t").map(|x| x.trim().to_string()).collect();
+                let values: Vec<String> = line.split('\t').map(|x| x.trim().to_string()).collect();
                 points.push(Point {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: None,
@@ -87,7 +87,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     ", "
                 } else if line.contains("; ") {
                     "; "
-                } else if line.contains("\t") {
+                } else if line.contains('\t') {
                     "\t"
                 } else {
                     " "
@@ -103,9 +103,9 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                 })
             }
             Kind::Unknown => {
-                let separator = if line.contains(",") {
+                let separator = if line.contains(',') {
                     ","
-                } else if line.contains("\t") {
+                } else if line.contains('\t') {
                     "\t"
                 } else {
                     " "
