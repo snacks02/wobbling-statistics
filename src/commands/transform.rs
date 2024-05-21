@@ -8,11 +8,11 @@ mod parser;
 #[derive(Debug, Parser)]
 pub(crate) struct Command {
     /// Set the input file
-    #[arg(default_value = "squig.db", long, short)]
+    #[arg(default_value = "squig.sqlite3", long, short)]
     input: String,
 
     /// Set the output file
-    #[arg(default_value = "squig_transformed.db", long, short)]
+    #[arg(default_value = "squig_transformed.sqlite3", long, short)]
     output: String,
 }
 

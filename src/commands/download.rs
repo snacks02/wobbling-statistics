@@ -7,7 +7,7 @@ mod requests;
 #[derive(Debug, Parser)]
 pub(crate) struct Command {
     /// Set the output file
-    #[arg(default_value = "squig.db", long, short)]
+    #[arg(default_value = "squig.sqlite3", long, short)]
     output: String,
 }
 
