@@ -1,7 +1,7 @@
 use anyhow::Error;
 use indoc::indoc;
 
-pub fn insert_or_ignore_into(
+pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
     name: &str,
     username: &str,
@@ -19,7 +19,7 @@ pub fn insert_or_ignore_into(
     Ok(result)
 }
 
-pub fn select_id_from(
+pub fn select(
     transaction: &rusqlite::Transaction,
     name: &str,
     username: &str,

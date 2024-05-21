@@ -2,7 +2,7 @@ use anyhow::Error;
 use indoc::indoc;
 
 #[allow(clippy::too_many_arguments)]
-pub fn insert_or_ignore_into(
+pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
     amazon: &Option<String>,
     brand_id: i64,
@@ -45,7 +45,7 @@ pub fn insert_or_ignore_into(
 }
 
 #[allow(clippy::too_many_arguments)]
-pub fn select_id_from(
+pub fn select(
     transaction: &rusqlite::Transaction,
     brand_id: i64,
     name: &String,

@@ -17,11 +17,10 @@ impl Command {
 
         let transaction = connection.transaction()?;
         for site in requests::sites::call()? {
-            database::sites::insert_or_ignore_into(&transaction, &site.name, &site.username)?;
-            let site_id =
-                database::sites::select_id_from(&transaction, &site.name, &site.username)?;
+            database::sites::insert_or_ignore(&transaction, &site.name, &site.username)?;
+            let site_id = database::sites::select(&transaction, &site.name, &site.username)?;
             for db in site.dbs {
-                database::dbs::insert_or_ignore_into(&transaction, &db.folder, site_id, &db.type_)?;
+                database::dbs::insert_or_ignore(&transaction, &db.folder, site_id, &db.type_)?;
             }
         }
         transaction.commit()?;
@@ -32,9 +31,9 @@ impl Command {
         for squig in squigs {
             let transaction = connection.transaction()?;
             for brand in requests::brands::call(&squig.username, &squig.folder)? {
-                database::brands::insert_or_ignore_into(&transaction, &brand.name, squig.site_id)?;
+                database::brands::insert_or_ignore(&transaction, &brand.name, squig.site_id)?;
                 let brand_id: i64 =
-                    database::brands::select_id_from(&transaction, &brand.name, squig.site_id)?;
+                    database::brands::select(&transaction, &brand.name, squig.site_id)?;
                 for phone in brand.phones {
                     let name: String = match phone.name {
                         requests::brands::StringOrVec::String(ref string) => string.clone(),
@@ -58,7 +57,7 @@ impl Command {
                         },
                         None => None,
                     };
-                    database::phones::insert_or_ignore_into(
+                    database::phones::insert_or_ignore(
                         &transaction,
                         &phone.amazon,
                         brand_id,
@@ -69,15 +68,14 @@ impl Command {
                         &review_score,
                         &phone.shop_link,
                     )?;
-                    let phone_id = database::phones::select_id_from(&transaction, brand_id, &name)?;
+                    let phone_id = database::phones::select(&transaction, brand_id, &name)?;
                     let texts = match phone.file {
                         requests::brands::StringOrVec::String(string) => vec![string],
                         requests::brands::StringOrVec::Vec(vec) => vec,
                     };
                     for text in texts {
-                        database::files::insert_or_ignore_into(&transaction, phone_id, &text)?;
-                        let file_id =
-                            database::files::select_id_from(&transaction, phone_id, &text)?;
+                        database::files::insert_or_ignore(&transaction, phone_id, &text)?;
+                        let file_id = database::files::select(&transaction, phone_id, &text)?;
                         request_and_insert_zero_channel(
                             &transaction,
                             &squig.username,
@@ -132,7 +130,7 @@ impl Command {
                         None => break,
                     };
                     for suffix in suffixes {
-                        database::suffixes::insert_or_ignore_into(&transaction, phone_id, &suffix)?;
+                        database::suffixes::insert_or_ignore(&transaction, phone_id, &suffix)?;
                     }
                 }
             }
@@ -160,13 +158,7 @@ fn request_and_insert_zero_channel(
             None => format!("{}.txt", text),
         },
     ) {
-        database::channels::insert_or_ignore_into(
-            transaction,
-            file_id,
-            0,
-            &text,
-            &database_channel,
-        )?;
+        database::channels::insert_or_ignore(transaction, file_id, 0, &text, &database_channel)?;
     }
     Ok(())
 }
@@ -186,7 +178,7 @@ fn request_and_insert_other_channels(
         folder,
         &format!("{} {}{}.txt", text, request_channel, sample_index),
     ) {
-        database::channels::insert_or_ignore_into(
+        database::channels::insert_or_ignore(
             transaction,
             file_id,
             sample_index,

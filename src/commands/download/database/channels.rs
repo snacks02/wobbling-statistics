@@ -1,7 +1,7 @@
 use anyhow::Error;
 use indoc::indoc;
 
-pub fn insert_or_ignore_into(
+pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
     file_id: i64,
     sample_index: i64,
