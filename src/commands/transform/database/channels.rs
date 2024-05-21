@@ -11,31 +11,22 @@ pub fn drop_column_text(transaction: &rusqlite::Transaction) -> Result<(), Error
         "
         ALTER TABLE channels
         RENAME TO old_channels;
+
         CREATE TABLE IF NOT EXISTS channels (
             id           INTEGER PRIMARY KEY,
             file_id      INTEGER REFERENCES files(id),
             sample_index INTEGER NOT NULL,
             type         TEXT
         );
+
         CREATE INDEX IF NOT EXISTS channels_file_id_idx
         ON channels(file_id);
+
         INSERT INTO channels
         SELECT id, file_id, sample_index, type
         FROM old_channels;
-        DROP TABLE old_channels;
 
-        DROP TABLE points;
-        CREATE TABLE IF NOT EXISTS points (
-            id            INTEGER PRIMARY KEY,
-            channel_id    INTEGER REFERENCES channels(id),
-            frequency_hz  REAL NOT NULL,
-            phase_degrees REAL,
-            point_index   INTEGER NOT NULL,
-            spl_db        REAL NOT NULL,
-            UNIQUE(channel_id, point_index)
-        );
-        CREATE INDEX IF NOT EXISTS points_channel_id_idx
-        ON points(channel_id);
+        DROP TABLE old_channels;
         "
     )
     .trim_end();

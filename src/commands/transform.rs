@@ -22,9 +22,9 @@ impl Command {
         let mut connection = rusqlite::Connection::open(&self.output)?;
 
         let transaction = connection.transaction()?;
-        database::points::create(&transaction)?;
         let channels = database::channels::select(&transaction)?;
         database::channels::drop_column_text(&transaction)?;
+        database::points::create(&transaction)?;
         for channel in channels {
             let points = parser::parse(&channel.text)?;
             for (index, point) in points.iter().enumerate() {
