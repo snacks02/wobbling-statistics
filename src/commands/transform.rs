@@ -32,8 +32,8 @@ impl Command {
                     &transaction,
                     channel.id,
                     point.frequency_hz,
-                    point.phase_degrees,
                     i32::try_from(index)?,
+                    point.phase_degrees,
                     point.spl_db,
                 )?;
             }

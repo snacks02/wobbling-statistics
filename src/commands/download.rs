@@ -183,20 +183,20 @@ fn request_and_insert_other_channels(
     file_id: i64,
     database_channel: String,
 ) -> Result<(), Error> {
-    let mut sample_index = 1;
+    let mut idx = 1;
     while let Ok(text) = requests::channels::call(
         username,
         folder,
-        &format!("{} {}{}.txt", text, request_channel, sample_index),
+        &format!("{} {}{}.txt", text, request_channel, idx),
     ) {
         database::channels::insert_or_ignore(
             transaction,
             file_id,
-            sample_index,
+            idx,
             &text,
             &Some(database_channel.clone()),
         )?;
-        sample_index += 1;
+        idx += 1;
     }
     Ok(())
 }

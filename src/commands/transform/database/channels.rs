@@ -13,17 +13,17 @@ pub fn drop_column_text(transaction: &rusqlite::Transaction) -> Result<(), Error
         RENAME TO old_channels;
 
         CREATE TABLE IF NOT EXISTS channels (
-            id           INTEGER PRIMARY KEY,
-            file_id      INTEGER REFERENCES files(id),
-            sample_index INTEGER NOT NULL,
-            type         TEXT
+            id      INTEGER PRIMARY KEY,
+            file_id INTEGER REFERENCES files(id),
+            idx     INTEGER NOT NULL,
+            type    TEXT
         );
 
         CREATE INDEX IF NOT EXISTS channels_file_id_idx
         ON channels(file_id);
 
         INSERT INTO channels
-        SELECT id, file_id, sample_index, type
+        SELECT id, file_id, idx, type
         FROM old_channels;
 
         DROP TABLE old_channels;
