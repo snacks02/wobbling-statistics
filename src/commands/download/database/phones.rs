@@ -12,7 +12,7 @@ pub fn insert_or_ignore(
     review_link: &Option<String>,
     review_score: &Option<String>,
     shop_link: &Option<String>,
-) -> Result<usize, Error> {
+) -> Result<(), Error> {
     let query = indoc!(
         "
         INSERT OR IGNORE INTO phones (
@@ -40,8 +40,8 @@ pub fn insert_or_ignore(
         shop_link,
     );
     log::info!("{}\n{:?}", query, params);
-    let result = transaction.execute(query, params)?;
-    Ok(result)
+    transaction.execute(query, params)?;
+    Ok(())
 }
 
 #[allow(clippy::too_many_arguments)]

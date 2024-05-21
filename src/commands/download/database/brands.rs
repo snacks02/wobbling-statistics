@@ -5,7 +5,7 @@ pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
     name: &str,
     site_id: i64,
-) -> Result<usize, Error> {
+) -> Result<(), Error> {
     let query = indoc!(
         "
         INSERT OR IGNORE INTO brands (name, site_id)
@@ -15,8 +15,8 @@ pub fn insert_or_ignore(
     .trim_end();
     let params = (name, site_id);
     log::info!("{}\n{:?}", query, params);
-    let result = transaction.execute(query, params)?;
-    Ok(result)
+    transaction.execute(query, params)?;
+    Ok(())
 }
 
 pub fn select(transaction: &rusqlite::Transaction, name: &str, site_id: i64) -> Result<i64, Error> {

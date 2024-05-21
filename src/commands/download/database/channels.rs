@@ -7,7 +7,7 @@ pub fn insert_or_ignore(
     sample_index: i64,
     text: &str,
     type_: &Option<String>,
-) -> Result<usize, Error> {
+) -> Result<(), Error> {
     let query = indoc!(
         "
         INSERT OR IGNORE INTO channels (file_id, sample_index, text, type)
@@ -16,6 +16,6 @@ pub fn insert_or_ignore(
     )
     .trim_end();
     log::info!("{}\n{:?}", query, (file_id, sample_index, "...", type_));
-    let result = transaction.execute(query, (file_id, sample_index, text, type_))?;
-    Ok(result)
+    transaction.execute(query, (file_id, sample_index, text, type_))?;
+    Ok(())
 }

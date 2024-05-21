@@ -8,7 +8,7 @@ pub fn insert_or_ignore(
     phase_degrees: Option<f64>,
     point_index: i32,
     spl_db: f64,
-) -> Result<usize, Error> {
+) -> Result<(), Error> {
     let query = indoc!(
         "
         INSERT OR IGNORE INTO points (channel_id, frequency_hz, phase_degrees, point_index, spl_db)
@@ -18,6 +18,6 @@ pub fn insert_or_ignore(
     .trim_end();
     let params = (channel_id, frequency_hz, phase_degrees, point_index, spl_db);
     log::info!("{}\n{:?}", query, params);
-    let result = transaction.execute(query, params)?;
-    Ok(result)
+    transaction.execute(query, params)?;
+    Ok(())
 }
