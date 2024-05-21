@@ -47,9 +47,9 @@ impl Command {
                     database::brands::select(&transaction, &brand.name, squig.site_id)?;
                 for phone in brand.phones {
                     let name: String = match phone.name {
-                        requests::brands::StringOrVec::String(ref string) => string.clone(),
-                        requests::brands::StringOrVec::Vec(ref vec) => {
-                            vec.first().context("Received an empty phone name")?.clone()
+                        requests::brands::StringOrVec::String(string) => string.clone(),
+                        requests::brands::StringOrVec::Vec(vec) => {
+                            vec.first().context("received an empty phone name")?.clone()
                         }
                     };
                     let price: Option<String> = match phone.other.price {
@@ -59,7 +59,7 @@ impl Command {
                     let review_score: Option<String> = match phone.other.review_score {
                         Some(value) => match value.get("reviewScore") {
                             Some(value) => match value {
-                                requests::brands::I8OrString::I8(ref i8_) => Some(i8_.to_string()),
+                                requests::brands::I8OrString::I8(i8_) => Some(i8_.to_string()),
                                 requests::brands::I8OrString::String(string) => {
                                     Some(string.to_string())
                                 }
