@@ -1,6 +1,33 @@
 use anyhow::Error;
 use indoc::indoc;
 
+pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
+    let query = indoc!(
+        "
+        CREATE TABLE IF NOT EXISTS phones (
+            id             INTEGER PRIMARY KEY,
+            amazon         TEXT,
+            brand_id       INTEGER REFERENCES brands(id),
+            name           TEXT NOT NULL,
+            preferred_shop TEXT,
+            price          TEXT,
+            review_link    TEXT,
+            review_score   TEXT,
+            shop_link      TEXT,
+            UNIQUE(brand_id, name)
+        );
+        CREATE INDEX IF NOT EXISTS phones_brand_id_idx
+        ON phones(brand_id);
+        CREATE INDEX IF NOT EXISTS phones_name_idx
+        ON phones(name);
+        "
+    )
+    .trim_end();
+    log::info!("{}", query);
+    transaction.execute_batch(query)?;
+    Ok(())
+}
+
 #[allow(clippy::too_many_arguments)]
 pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,

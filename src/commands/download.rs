@@ -13,7 +13,18 @@ pub(crate) struct Command {
 
 impl Command {
     pub fn execute(&self) -> Result<(), Error> {
-        let mut connection = database::init(&self.output)?;
+        let mut connection = rusqlite::Connection::open(&self.output)?;
+
+        let transaction = connection.transaction()?;
+        database::pragmas::enable_foreign_keys(&transaction)?;
+        database::sites::create(&transaction)?;
+        database::dbs::create(&transaction)?;
+        database::brands::create(&transaction)?;
+        database::phones::create(&transaction)?;
+        database::files::create(&transaction)?;
+        database::channels::create(&transaction)?;
+        database::suffixes::create(&transaction)?;
+        transaction.commit()?;
 
         let transaction = connection.transaction()?;
         for site in requests::sites::call()? {

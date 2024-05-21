@@ -19,9 +19,10 @@ pub(crate) struct Command {
 impl Command {
     pub fn execute(&self) -> Result<(), Error> {
         fs::copy(&self.input, &self.output)?;
-        let mut connection = database::init(&self.output)?;
+        let mut connection = rusqlite::Connection::open(&self.output)?;
 
         let transaction = connection.transaction()?;
+        database::points::create(&transaction)?;
         let channels = database::channels::select(&transaction)?;
         database::channels::drop_column_text(&transaction)?;
         for channel in channels {

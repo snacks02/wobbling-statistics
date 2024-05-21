@@ -1,6 +1,27 @@
 use anyhow::Error;
 use indoc::indoc;
 
+pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
+    let query = indoc!(
+        "
+        CREATE TABLE IF NOT EXISTS files (
+            id       INTEGER PRIMARY KEY,
+            phone_id INTEGER REFERENCES phones(id),
+            text     TEXT NOT NULL,
+            UNIQUE(phone_id, text)
+        );
+        CREATE INDEX IF NOT EXISTS files_phone_id_idx
+        ON files(phone_id);
+        CREATE INDEX IF NOT EXISTS files_text_idx
+        ON files(text);
+        "
+    )
+    .trim_end();
+    log::info!("{}", query);
+    transaction.execute_batch(query)?;
+    Ok(())
+}
+
 pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
     phone_id: i64,
