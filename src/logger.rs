@@ -11,6 +11,7 @@ static ANSI_RESET: &str = "\x1b[0m";
 static FIVE_SPACES_INDENTATION: &str = "     ";
 static FOUR_SPACES_INDENTATION: &str = "    ";
 
+#[derive(Debug)]
 struct Logger;
 static LOGGER: Logger = Logger;
 

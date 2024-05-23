@@ -1,6 +1,7 @@
 use anyhow::Error;
 use indoc::indoc;
 
+#[derive(Debug)]
 pub struct IdAndText {
     pub id: i32,
     pub text: String,
