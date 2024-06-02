@@ -3,7 +3,7 @@ use clap::Parser;
 use std::fs;
 
 mod database;
-mod parser;
+mod measurement_parser;
 
 #[derive(Debug, Parser)]
 pub(crate) struct Command {
@@ -26,7 +26,7 @@ impl Command {
         database::channels::drop_column_text(&transaction)?;
         database::points::create(&transaction)?;
         for channel in channels {
-            let points = parser::parse(&channel.text)?;
+            let points = measurement_parser::parse(&channel.text)?;
             for (index, point) in points.iter().enumerate() {
                 database::points::insert_or_ignore(
                     &transaction,
