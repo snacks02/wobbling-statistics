@@ -2,8 +2,9 @@ use anyhow::Error;
 use clap::Parser;
 use std::fs;
 
+use crate::measurement_parser;
+
 mod database;
-mod measurement_parser;
 
 #[derive(Debug, Parser)]
 pub(crate) struct Command {

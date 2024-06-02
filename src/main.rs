@@ -3,6 +3,7 @@ use clap::{Parser, Subcommand};
 
 mod commands;
 mod logger;
+mod measurement_parser;
 
 #[derive(Debug, Parser)]
 #[command(
