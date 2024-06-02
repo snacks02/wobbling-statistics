@@ -21,13 +21,13 @@ struct CommandParser {
 
 #[derive(Debug, Subcommand)]
 enum Command {
-    /// Analyze transformed data in the SQLite database
+    /// Analyze data stored in the SQLite database
     Analyze(commands::analyze::Command),
 
-    /// Download Squiglink data and save it into a SQLite database
+    /// Download Squiglink data and store it in the SQLite database
     Download(commands::download::Command),
 
-    /// Transform the SQLite database to make it easier to process
+    /// Transform the SQLite database to simplify analysis from SQL
     Transform(commands::transform::Command),
 }
 
