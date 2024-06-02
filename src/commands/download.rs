@@ -159,6 +159,9 @@ fn request_and_insert_zero_channel(
     file_id: i64,
     database_channel: Option<String>,
 ) -> Result<(), Error> {
+    if database::channels::select(transaction, file_id, 0, &database_channel).is_ok() {
+        return Ok(());
+    }
     if let Ok(text) = requests::channels::call(
         username,
         folder,
@@ -182,6 +185,11 @@ fn request_and_insert_other_channels(
     database_channel: String,
 ) -> Result<(), Error> {
     let mut idx = 1;
+    while database::channels::select(transaction, file_id, idx, &Some(database_channel.clone()))
+        .is_ok()
+    {
+        idx += 1
+    }
     while let Ok(text) = requests::channels::call(
         username,
         folder,

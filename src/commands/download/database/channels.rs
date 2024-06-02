@@ -40,3 +40,16 @@ pub fn insert_or_ignore(
     transaction.execute(query, (file_id, idx, text, type_))?;
     Ok(())
 }
+
+pub fn select(
+    transaction: &rusqlite::Transaction,
+    file_id: i64,
+    idx: i64,
+    type_: &Option<String>,
+) -> Result<i64, Error> {
+    let query = "SELECT id FROM channels WHERE file_id = ? AND idx = ? AND type = ?";
+    let params = (file_id, idx, type_);
+    log::info!("{}\n{:?}", query, params);
+    let result = transaction.query_row(query, params, |row| row.get(0))?;
+    Ok(result)
+}
