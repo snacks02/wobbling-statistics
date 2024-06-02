@@ -4,7 +4,5 @@
 ## Usage
 
 ```sh
-cargo run --release -- download
-cargo run --release -- transform
-cargo run --release -- analyze
+cargo run --release -- --help
 ```
