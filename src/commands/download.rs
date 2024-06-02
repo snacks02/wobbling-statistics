@@ -133,15 +133,13 @@ impl Command {
                             "Right".to_string(),
                         )?;
                     }
-                    let suffixes = match phone.suffix {
-                        Some(value) => match value {
-                            requests::brands::StringOrVec::String(string) => vec![string],
-                            requests::brands::StringOrVec::Vec(vec) => vec,
-                        },
-                        None => break,
-                    };
-                    for suffix in suffixes {
-                        database::suffixes::insert_or_ignore(&transaction, phone_id, &suffix)?;
+                    if let Some(suffixes) = phone.suffix.map(|value| match value {
+                        requests::brands::StringOrVec::String(string) => vec![string],
+                        requests::brands::StringOrVec::Vec(vec) => vec,
+                    }) {
+                        for suffix in suffixes {
+                            database::suffixes::insert_or_ignore(&transaction, phone_id, &suffix)?;
+                        }
                     }
                 }
             }
