@@ -88,7 +88,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: values[2].parse::<f64>().ok(),
                     spl_db: values[1].parse::<f64>()?,
-                })
+                });
             }
             Kind::Comment
             | Kind::FftAudioTools
@@ -101,7 +101,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: None,
                     spl_db: values[1].parse::<f64>()?,
-                })
+                });
             }
             Kind::FrequencySplPhase => {
                 let separator = if line.contains('\t') { "\t" } else { " " };
@@ -114,7 +114,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: values[2].parse::<f64>().ok(),
                     spl_db: values[1].parse::<f64>()?,
-                })
+                });
             }
             Kind::RewV5 => {
                 let separator = if line.contains(", ") {
@@ -134,7 +134,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: values.get(2).and_then(|value| value.parse::<f64>().ok()),
                     spl_db: values[1].parse::<f64>()?,
-                })
+                });
             }
             Kind::Unknown => {
                 let separator = if line.contains(',') {
@@ -152,7 +152,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: values.get(2).and_then(|value| value.parse::<f64>().ok()),
                     spl_db: values[1].parse::<f64>()?,
-                })
+                });
             }
         }
     }

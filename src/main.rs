@@ -1,3 +1,6 @@
+#![warn(clippy::redundant_pub_crate)]
+#![warn(clippy::semicolon_if_nothing_returned)]
+
 use anyhow::Error;
 use clap::{Parser, Subcommand};
 

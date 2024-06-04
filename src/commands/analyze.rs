@@ -8,7 +8,7 @@ use crate::measurement_parser;
 mod database;
 
 #[derive(Debug, Parser)]
-pub(crate) struct Command {
+pub struct Command {
     /// Set the input file
     #[arg(default_value = "squig.sqlite3", long, short)]
     input: String,

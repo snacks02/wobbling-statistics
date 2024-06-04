@@ -5,7 +5,7 @@ mod database;
 mod requests;
 
 #[derive(Debug, Parser)]
-pub(crate) struct Command {
+pub struct Command {
     /// Set the output file
     #[arg(default_value = "squig.sqlite3", long, short)]
     output: String,
@@ -188,7 +188,7 @@ fn request_and_insert_other_channels(
     while database::channels::select(transaction, file_id, idx, &Some(database_channel.clone()))
         .is_ok()
     {
-        idx += 1
+        idx += 1;
     }
     while let Ok(text) = requests::channels::call(
         username,
