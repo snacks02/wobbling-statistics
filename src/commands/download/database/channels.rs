@@ -14,6 +14,10 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         );
         CREATE INDEX IF NOT EXISTS channels_file_id_idx
         ON channels(file_id);
+        CREATE INDEX IF NOT EXISTS channels_idx_idx
+        ON channels(idx);
+        CREATE INDEX IF NOT EXISTS channels_type_idx
+        ON channels(type);
         "
     )
     .trim_end();
