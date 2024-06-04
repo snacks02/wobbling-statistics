@@ -9,12 +9,15 @@ pub struct Point {
 
 enum Kind {
     AchoReviews,
-    Curve1,
+    Comment,
     FftAudioTools,
     FrequencyMagnitude,
     FrequencySplPhase,
     RewV5,
     Unknown,
+    XCurve1,
+    XLeft,
+    XRight,
 }
 
 pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
@@ -27,8 +30,8 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
             kind = Kind::AchoReviews;
             continue;
         }
-        if line == "x\tCurve1" {
-            kind = Kind::Curve1;
+        if line == "Comment: TJ Comment\t" {
+            kind = Kind::Comment;
             continue;
         }
         if line.starts_with("FFT\tAudioTools") {
@@ -39,7 +42,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
             kind = Kind::FrequencyMagnitude;
             continue;
         }
-        if line == "Freq[Hz]\tdBSPL\tPhase[Deg]" {
+        if line == "Freq[Hz]     dBSPL  Phase[Deg]" || line == "Freq[Hz]\tdBSPL\tPhase[Deg]" {
             kind = Kind::FrequencySplPhase;
             continue;
         }
@@ -47,8 +50,21 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
             kind = Kind::RewV5;
             continue;
         }
+        if line == "x\tCurve1" {
+            kind = Kind::XCurve1;
+            continue;
+        }
+        if line == "x\tLEFT" {
+            kind = Kind::XLeft;
+            continue;
+        }
+        if line == "x\tRIGHT" {
+            kind = Kind::XRight;
+            continue;
+        }
 
-        if line == "Frequency\tdB\tUnweighted"
+        if line == "Comment: TJ Comment"
+            || line == "Frequency\tdB\tUnweighted"
             || line == "Senny IE600 L.txt"
             || line == "Senny IE600 R.txt"
             || line.is_empty()
@@ -66,7 +82,7 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
         }
 
         match kind {
-            Kind::AchoReviews | Kind::FrequencySplPhase => {
+            Kind::AchoReviews => {
                 let values: Vec<String> = line.split('\t').map(|x| x.trim().to_string()).collect();
                 points.push(Point {
                     frequency_hz: values[0].parse::<f64>()?,
@@ -74,11 +90,29 @@ pub fn parse(text: &str) -> Result<Vec<Point>, Error> {
                     spl_db: values[1].parse::<f64>()?,
                 })
             }
-            Kind::Curve1 | Kind::FftAudioTools | Kind::FrequencyMagnitude => {
+            Kind::Comment
+            | Kind::FftAudioTools
+            | Kind::FrequencyMagnitude
+            | Kind::XCurve1
+            | Kind::XLeft
+            | Kind::XRight => {
                 let values: Vec<String> = line.split('\t').map(|x| x.trim().to_string()).collect();
                 points.push(Point {
                     frequency_hz: values[0].parse::<f64>()?,
                     phase_degrees: None,
+                    spl_db: values[1].parse::<f64>()?,
+                })
+            }
+            Kind::FrequencySplPhase => {
+                let separator = if line.contains('\t') { "\t" } else { " " };
+                let values: Vec<String> = line
+                    .split(separator)
+                    .filter(|x| !x.is_empty())
+                    .map(|x| x.trim().to_string())
+                    .collect();
+                points.push(Point {
+                    frequency_hz: values[0].parse::<f64>()?,
+                    phase_degrees: values[2].parse::<f64>().ok(),
                     spl_db: values[1].parse::<f64>()?,
                 })
             }
