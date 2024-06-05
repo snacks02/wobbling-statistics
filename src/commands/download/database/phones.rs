@@ -31,14 +31,14 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
 #[allow(clippy::too_many_arguments)]
 pub fn insert_or_ignore(
     transaction: &rusqlite::Transaction,
-    amazon: &Option<String>,
+    amazon: Option<&str>,
     brand_id: i64,
-    name: &String,
-    preferred_shop: &Option<String>,
-    price: &Option<String>,
-    review_link: &Option<String>,
-    review_score: &Option<String>,
-    shop_link: &Option<String>,
+    name: &str,
+    preferred_shop: Option<&str>,
+    price: Option<&str>,
+    review_link: Option<&str>,
+    review_score: Option<&str>,
+    shop_link: Option<&str>,
 ) -> Result<(), Error> {
     let query = indoc!(
         "
@@ -75,7 +75,7 @@ pub fn insert_or_ignore(
 pub fn select(
     transaction: &rusqlite::Transaction,
     brand_id: i64,
-    name: &String,
+    name: &str,
 ) -> Result<i64, Error> {
     let query = "SELECT id FROM phones WHERE brand_id = ? AND name = ?";
     let params = (brand_id, name);

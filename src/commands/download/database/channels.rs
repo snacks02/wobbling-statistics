@@ -31,7 +31,7 @@ pub fn insert_or_ignore(
     file_id: i64,
     idx: i64,
     text: &str,
-    type_: &Option<String>,
+    type_: Option<&str>,
 ) -> Result<(), Error> {
     let query = indoc!(
         "
@@ -49,7 +49,7 @@ pub fn select(
     transaction: &rusqlite::Transaction,
     file_id: i64,
     idx: i64,
-    type_: &Option<String>,
+    type_: Option<&str>,
 ) -> Result<i64, Error> {
     let query = "SELECT id FROM channels WHERE file_id = ? AND idx = ? AND type = ?";
     let params = (file_id, idx, type_);

@@ -70,14 +70,14 @@ impl Command {
                     };
                     database::phones::insert_or_ignore(
                         &transaction,
-                        &phone.amazon,
+                        phone.amazon.as_deref(),
                         brand_id,
                         &name,
-                        &phone.preferred_shop,
-                        &price,
-                        &phone.review_link,
-                        &review_score,
-                        &phone.shop_link,
+                        phone.preferred_shop.as_deref(),
+                        price.as_deref(),
+                        phone.review_link.as_deref(),
+                        review_score.as_deref(),
+                        phone.shop_link.as_deref(),
                     )?;
                     let phone_id = database::phones::select(&transaction, brand_id, &name)?;
                     let texts = match phone.file {
@@ -101,36 +101,36 @@ impl Command {
                             &squig.username,
                             &squig.folder,
                             &text,
-                            Some("L".to_string()),
+                            Some("L"),
                             file_id,
-                            Some("Left".to_string()),
+                            Some("Left"),
                         )?;
                         request_and_insert_other_channels(
                             &transaction,
                             &squig.username,
                             &squig.folder,
                             &text,
-                            "L".to_string(),
+                            "L",
                             file_id,
-                            "Left".to_string(),
+                            "Left",
                         )?;
                         request_and_insert_zero_channel(
                             &transaction,
                             &squig.username,
                             &squig.folder,
                             &text,
-                            Some("R".to_string()),
+                            Some("R"),
                             file_id,
-                            Some("Right".to_string()),
+                            Some("Right"),
                         )?;
                         request_and_insert_other_channels(
                             &transaction,
                             &squig.username,
                             &squig.folder,
                             &text,
-                            "R".to_string(),
+                            "R",
                             file_id,
-                            "Right".to_string(),
+                            "Right",
                         )?;
                     }
                     if let Some(suffixes) = phone.suffix.map(|value| match value {
@@ -155,11 +155,11 @@ fn request_and_insert_zero_channel(
     username: &str,
     folder: &str,
     text: &str,
-    request_channel: Option<String>,
+    request_channel: Option<&str>,
     file_id: i64,
-    database_channel: Option<String>,
+    database_channel: Option<&str>,
 ) -> Result<(), Error> {
-    if database::channels::select(transaction, file_id, 0, &database_channel).is_ok() {
+    if database::channels::select(transaction, file_id, 0, database_channel).is_ok() {
         return Ok(());
     }
     if let Ok(text) = requests::channels::call(
@@ -170,7 +170,7 @@ fn request_and_insert_zero_channel(
             None => format!("{}.txt", text),
         },
     ) {
-        database::channels::insert_or_ignore(transaction, file_id, 0, &text, &database_channel)?;
+        database::channels::insert_or_ignore(transaction, file_id, 0, &text, database_channel)?;
     }
     Ok(())
 }
@@ -180,14 +180,12 @@ fn request_and_insert_other_channels(
     username: &str,
     folder: &str,
     text: &str,
-    request_channel: String,
+    request_channel: &str,
     file_id: i64,
-    database_channel: String,
+    database_channel: &str,
 ) -> Result<(), Error> {
     let mut idx = 1;
-    while database::channels::select(transaction, file_id, idx, &Some(database_channel.clone()))
-        .is_ok()
-    {
+    while database::channels::select(transaction, file_id, idx, Some(database_channel)).is_ok() {
         idx += 1;
     }
     while let Ok(text) = requests::channels::call(
@@ -200,7 +198,7 @@ fn request_and_insert_other_channels(
             file_id,
             idx,
             &text,
-            &Some(database_channel.clone()),
+            Some(database_channel),
         )?;
         idx += 1;
     }
