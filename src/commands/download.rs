@@ -43,8 +43,7 @@ impl Command {
             let transaction = connection.transaction()?;
             for brand in requests::brands::call(&squig.username, &squig.folder)? {
                 database::brands::insert_or_ignore(&transaction, &brand.name, squig.site_id)?;
-                let brand_id: i64 =
-                    database::brands::select(&transaction, &brand.name, squig.site_id)?;
+                let brand_id = database::brands::select(&transaction, &brand.name, squig.site_id)?;
                 for phone in brand.phones {
                     let name: String = match phone.name {
                         requests::brands::StringOrVec::String(string) => string.clone(),
