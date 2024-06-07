@@ -22,7 +22,7 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn insert_or_ignore(
+pub fn insert(
     transaction: &rusqlite::Transaction,
     name: &str,
     username: &str,

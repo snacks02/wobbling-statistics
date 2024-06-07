@@ -20,11 +20,7 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn insert_or_ignore(
-    transaction: &rusqlite::Transaction,
-    phone_id: i64,
-    text: &str,
-) -> Result<(), Error> {
+pub fn insert(transaction: &rusqlite::Transaction, phone_id: i64, text: &str) -> Result<(), Error> {
     let query = indoc!(
         "
         INSERT OR IGNORE INTO suffixes (phone_id, text)

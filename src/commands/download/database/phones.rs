@@ -29,7 +29,7 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
 }
 
 #[allow(clippy::too_many_arguments)]
-pub fn insert_or_ignore(
+pub fn insert(
     transaction: &rusqlite::Transaction,
     amazon: Option<&str>,
     brand_id: i64,

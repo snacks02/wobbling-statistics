@@ -29,7 +29,7 @@ impl Command {
         for channel in channels {
             let points = measurement_parser::parse(&channel.text)?;
             for (index, point) in points.iter().enumerate() {
-                database::points::insert_or_ignore(
+                database::points::insert(
                     &transaction,
                     channel.id,
                     point.frequency_hz,

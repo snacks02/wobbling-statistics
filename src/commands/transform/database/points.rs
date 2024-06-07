@@ -23,7 +23,7 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn insert_or_ignore(
+pub fn insert(
     transaction: &rusqlite::Transaction,
     channel_id: i32,
     frequency_hz: f64,
