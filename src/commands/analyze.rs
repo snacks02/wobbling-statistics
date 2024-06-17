@@ -57,6 +57,7 @@ impl Command {
         }
         let mut brand_differences: Vec<Bar> = brand_differences
             .iter()
+            .filter(|(_name, points)| points.len() >= 10)
             .map(|(name, points)| {
                 let average_channel_imbalance = points.iter().sum::<f64>() / points.len() as f64;
                 Bar {
