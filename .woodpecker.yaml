@@ -1,6 +1,8 @@
 steps:
   check:
     commands:
+      - apt update
+      - apt install -y libssl-dev openssl pkg-config
       - rustup component add clippy
       - rustup component add rustfmt
       - cargo build

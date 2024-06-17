@@ -89,19 +89,11 @@ impl Command {
                     plotly::common::Marker::new()
                         .color(plotly::common::color::Rgb::new(58, 124, 191)),
                 )
-                .orientation(plotly::common::Orientation::Horizontal)
-                .show_legend(false),
-        );
-        plot.set_configuration(
-            plotly::Configuration::new()
-                .display_mode_bar(plotly::configuration::DisplayModeBar::False)
-                .responsive(true),
+                .orientation(plotly::common::Orientation::Horizontal),
         );
         plot.set_layout(
             plotly::Layout::new()
                 .bar_gap(0.1)
-                .bar_mode(plotly::layout::BarMode::Stack)
-                .drag_mode(plotly::layout::DragMode::False)
                 .height(keys.len() * 30)
                 .margin(
                     plotly::layout::Margin::new()
@@ -111,7 +103,13 @@ impl Command {
                         .top(0),
                 ),
         );
-        plot.write_html(format!("{}/channel_imbalance.html", &self.output));
+        plot.write_image(
+            format!("{}/channel_imbalance.svg", &self.output),
+            plotly::ImageFormat::SVG,
+            1080,
+            keys.len() * 30,
+            1.0,
+        );
         transaction.commit()?;
 
         Ok(())
