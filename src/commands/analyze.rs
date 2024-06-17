@@ -95,7 +95,7 @@ impl Command {
         plot.set_layout(
             plotly::Layout::new()
                 .bar_gap(0.1)
-                .height(keys.len() * 30)
+                .height(keys.len() * 20)
                 .margin(
                     plotly::layout::Margin::new()
                         .bottom(0)
@@ -110,7 +110,7 @@ impl Command {
             format!("{}/channel_imbalance.svg", &self.output),
             plotly::ImageFormat::SVG,
             1080,
-            keys.len() * 30,
+            keys.len() * 20,
             1.0,
         );
         transaction.commit()?;
