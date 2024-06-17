@@ -98,11 +98,13 @@ impl Command {
                 .height(keys.len() * 30)
                 .margin(
                     plotly::layout::Margin::new()
-                        .bottom(14)
-                        .left(200)
+                        .bottom(0)
+                        .left(0)
                         .right(0)
                         .top(0),
-                ),
+                )
+                .x_axis(plotly::layout::Axis::new().auto_margin(true))
+                .y_axis(plotly::layout::Axis::new().auto_margin(true)),
         );
         plot.write_image(
             format!("{}/channel_imbalance.svg", &self.output),
