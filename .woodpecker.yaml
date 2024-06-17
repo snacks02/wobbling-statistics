@@ -9,7 +9,7 @@ steps:
       - cargo clippy -- --deny warnings
       - cargo fmt
       - cargo test
-    image: rust:1.78-slim-bookworm
+    image: rust:1.79-slim-bookworm
     when:
       branch: main
       event: [pull_request, push]
