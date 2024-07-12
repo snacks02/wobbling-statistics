@@ -18,6 +18,7 @@ pub struct Command {
     output: String,
 }
 
+#[derive(Debug)]
 struct Bar {
     brand_name: String,
     average_channel_imbalance: f64,

@@ -7,6 +7,7 @@ pub struct Point {
     pub spl_db: f64,
 }
 
+#[derive(Debug)]
 enum Kind {
     AchoReviews,
     Comment,
