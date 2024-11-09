@@ -21,7 +21,6 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
@@ -40,7 +39,6 @@ pub fn insert(
         "
     )
     .trim_end();
-    log::info!("{}\n{:?}", query, (file_id, idx, "...", type_));
     transaction.execute(query, (file_id, idx, text, type_))?;
     Ok(())
 }
@@ -53,7 +51,6 @@ pub fn select(
 ) -> Result<i64, Error> {
     let query = "SELECT id FROM channels WHERE file_id = ? AND idx = ? AND type = ?";
     let params = (file_id, idx, type_);
-    log::info!("{}\n{:?}", query, params);
     let result = transaction.query_row(query, params, |row| row.get(0))?;
     Ok(result)
 }

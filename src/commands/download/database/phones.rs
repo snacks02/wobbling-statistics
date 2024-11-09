@@ -23,7 +23,6 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
@@ -66,7 +65,6 @@ pub fn insert(
         review_score,
         shop_link,
     );
-    log::info!("{}\n{:?}", query, params);
     transaction.execute(query, params)?;
     Ok(())
 }
@@ -79,7 +77,6 @@ pub fn select(
 ) -> Result<i64, Error> {
     let query = "SELECT id FROM phones WHERE brand_id = ? AND name = ?";
     let params = (brand_id, name);
-    log::info!("{}\n{:?}", query, params);
     let result = transaction.query_row(query, params, |row| row.get(0))?;
     Ok(result)
 }

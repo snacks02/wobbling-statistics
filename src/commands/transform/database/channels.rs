@@ -31,14 +31,12 @@ pub fn drop_column_text(transaction: &rusqlite::Transaction) -> Result<(), Error
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
 
 pub fn select(transaction: &rusqlite::Transaction) -> Result<Vec<IdAndText>, Error> {
     let query = "SELECT id, text FROM channels";
-    log::info!("{}", query);
     let mut statement = transaction.prepare(query)?;
     let channel_iter = statement.query_map([], |row| {
         Ok(IdAndText {

@@ -18,7 +18,6 @@ pub fn select(transaction: &rusqlite::Transaction) -> Result<Vec<Squig>, Error> 
     )
     .trim_end();
     let mut statement = transaction.prepare(query)?;
-    log::info!("{}", query);
     let squigs = statement
         .query_map([], |row| {
             Ok(Squig {

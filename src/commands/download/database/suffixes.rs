@@ -15,7 +15,6 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
@@ -29,7 +28,6 @@ pub fn insert(transaction: &rusqlite::Transaction, phone_id: i64, text: &str) ->
     )
     .trim_end();
     let params = (phone_id, text);
-    log::info!("{}\n{:?}", query, params);
     transaction.execute(query, params)?;
     Ok(())
 }

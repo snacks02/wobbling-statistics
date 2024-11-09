@@ -4,7 +4,6 @@
 use anyhow::Error;
 
 mod commands;
-mod logger;
 mod measurement_parser;
 
 #[derive(clap::Parser, Debug)]
@@ -35,8 +34,6 @@ enum Command {
 }
 
 fn main() -> Result<(), Error> {
-    logger::init()?;
-
     let arguments: CommandParser = clap::Parser::parse();
     match arguments.command {
         Command::Analyze(command) => command.execute()?,

@@ -18,12 +18,8 @@ pub struct Db {
 pub fn call() -> Result<Vec<Site>, Error> {
     let url = "https://squig.link/squigsites.json";
     let response = match ureq::get(url).call() {
-        Ok(response) => {
-            log::info!("{} - {}", url, response.status());
-            response
-        }
+        Ok(response) => response,
         Err(ureq::Error::Status(code, response)) => {
-            log::warn!("{} - {}", url, response.status());
             return Err(Error::from(ureq::Error::Status(code, response)));
         }
         Err(err) => return Err(Error::from(err)),

@@ -6,8 +6,8 @@ edition = "2021"
 [dependencies]
 anyhow = { version = "1.0.93" }
 clap = { version = "4.5.20", features = ["derive", "wrap_help"] }
+indicatif = { version = "0.17.8" }
 indoc = { version = "2.0.5" }
-log = { version = "0.4.22" }
 plotly = { version = "0.10.0", features = ["kaleido"] }
 rusqlite = { version = "0.32.1", features = ["bundled"] }
 serde = { version = "1.0.214", features = ["derive"] }

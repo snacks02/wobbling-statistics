@@ -17,7 +17,6 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
@@ -31,7 +30,6 @@ pub fn insert(transaction: &rusqlite::Transaction, name: &str, site_id: i64) -> 
     )
     .trim_end();
     let params = (name, site_id);
-    log::info!("{}\n{:?}", query, params);
     transaction.execute(query, params)?;
     Ok(())
 }
@@ -39,7 +37,6 @@ pub fn insert(transaction: &rusqlite::Transaction, name: &str, site_id: i64) -> 
 pub fn select(transaction: &rusqlite::Transaction, name: &str, site_id: i64) -> Result<i64, Error> {
     let query = "SELECT id FROM brands WHERE name = ? AND site_id = ?";
     let params = (name, site_id);
-    log::info!("{}\n{:?}", query, params);
     let result = transaction.query_row(query, params, |row| row.get(0))?;
     Ok(result)
 }

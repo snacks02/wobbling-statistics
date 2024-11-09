@@ -25,7 +25,6 @@ pub fn select(transaction: &rusqlite::Transaction) -> Result<Vec<Output>, Error>
     )
     .trim_end();
     let mut statement = transaction.prepare(query)?;
-    log::info!("{}", query);
     let outputs = statement
         .query_map([], |row| {
             Ok(Output {

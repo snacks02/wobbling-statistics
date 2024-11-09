@@ -18,7 +18,6 @@ pub fn create(transaction: &rusqlite::Transaction) -> Result<(), Error> {
         "
     )
     .trim_end();
-    log::info!("{}", query);
     transaction.execute_batch(query)?;
     Ok(())
 }
@@ -39,7 +38,6 @@ pub fn insert(
     )
     .trim_end();
     let params = (channel_id, frequency_hz, idx, phase_degrees, spl_db);
-    log::info!("{}\n{:?}", query, params);
     transaction.execute(query, params)?;
     Ok(())
 }
