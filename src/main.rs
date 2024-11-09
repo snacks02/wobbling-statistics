@@ -2,13 +2,12 @@
 #![warn(clippy::semicolon_if_nothing_returned)]
 
 use anyhow::Error;
-use clap::{Parser, Subcommand};
 
 mod commands;
 mod logger;
 mod measurement_parser;
 
-#[derive(Debug, Parser)]
+#[derive(clap::Parser, Debug)]
 #[command(
     disable_help_subcommand = true,
     disable_version_flag = true,
@@ -23,7 +22,7 @@ struct CommandParser {
     command: Command,
 }
 
-#[derive(Debug, Subcommand)]
+#[derive(clap::Subcommand, Debug)]
 enum Command {
     /// Analyze data stored in the SQLite database
     Analyze(commands::analyze::Command),
@@ -38,7 +37,7 @@ enum Command {
 fn main() -> Result<(), Error> {
     logger::init()?;
 
-    let arguments = CommandParser::parse();
+    let arguments: CommandParser = clap::Parser::parse();
     match arguments.command {
         Command::Analyze(command) => command.execute()?,
         Command::Download(command) => command.execute()?,

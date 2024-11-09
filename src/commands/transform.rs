@@ -1,12 +1,11 @@
 use anyhow::Error;
-use clap::Parser;
 use std::fs;
 
 use crate::measurement_parser;
 
 mod database;
 
-#[derive(Debug, Parser)]
+#[derive(clap::Parser, Debug)]
 pub struct Command {
     /// Set the input file
     #[arg(default_value = "squig.sqlite3", long, short)]

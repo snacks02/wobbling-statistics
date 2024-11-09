@@ -1,10 +1,9 @@
 use anyhow::{Context, Error};
-use clap::Parser;
 
 mod database;
 mod requests;
 
-#[derive(Debug, Parser)]
+#[derive(clap::Parser, Debug)]
 pub struct Command {
     /// Set the output file
     #[arg(default_value = "squig.sqlite3", long, short)]
