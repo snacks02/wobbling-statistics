@@ -57,7 +57,16 @@ impl Command {
 
         for squig in squigs {
             let transaction = connection.transaction()?;
-            let brands = requests::brands::call(&squig.username, &squig.folder)?;
+            let brands = match requests::brands::call(&squig.username, &squig.folder) {
+                Ok(brands) => brands,
+                Err(err) => {
+                    squigs_progress_bar.println(format!(
+                        "\nFailed to fetch data from `https://{}.squig.link{}data/phone_book.json`:\n\n    {}\n\n",
+                        squig.username, squig.folder, err
+                    ));
+                    continue;
+                }
+            };
             let progress_bar = new_progress_bar(
                 brands.iter().map(|brand| brand.phones.len()).sum(),
                 max_title_len,
