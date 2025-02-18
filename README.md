@@ -2,7 +2,7 @@
 <p align="center">
   <img
     alt="WobblingStatistics"
-    src="https://codeberg.org/snacks/wobbling-statistics/media/branch/assets/logo.png"
+    src="https://media.githubusercontent.com/media/snacks02/wobbling-statistics/refs/heads/assets/logo.png"
     width="480px"
   />
 </p>
